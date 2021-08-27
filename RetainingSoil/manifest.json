@@ -1,0 +1,9 @@
+{
+  "Name": "RetainingSoil",
+  "Author": "Yariazen",
+  "Version": "1.0.0",
+  "Description": "Description",
+  "UniqueID": "Yariazen.RetainingSoil",
+  "EntryDll": "RetainingSoil.dll",
+  "UpdateKeys": []
+}
