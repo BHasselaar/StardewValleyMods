@@ -1,0 +1,6 @@
+﻿namespace RetainingSoil
+{
+    class ModData
+    {
+    }
+}
