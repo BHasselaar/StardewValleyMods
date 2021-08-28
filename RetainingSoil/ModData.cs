@@ -1,5 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using RetainingSoil.framework;
 using StardewValley;
 using System.Collections.Generic;
 
@@ -7,18 +6,34 @@ namespace RetainingSoil
 {
     public class ModData
     {
-        public List<Dictionary<Vector2, TileData>> data { get; set; }
+        public List<List<TileData>> data { get; set; }
 
         public ModData()
         {
-            data = new List<Dictionary<Vector2, TileData>>();
+            data = new List<List<TileData>>();
         }
-        public void SaveData(Dictionary<GameLocation, List<Vector2>> dictionary)
+
+        public void SaveData(Dictionary<GameLocation, List<TileData>> dictionary)
         {
-            this.data = new List<TileData>();
-            foreach (KeyValuePair<GameLocation, List<Vector2>> entry in dictionary)
+            foreach (KeyValuePair<GameLocation, List<TileData>> entry in dictionary)
             {
-                this.data.Add(new TileData(entry.Key.name, entry.Value));
+                data.Add(entry.Value);
+            }
+        }
+
+        public class TileData
+        {
+            public Vector2 tiles { get; set; }
+            public string location { get; set; }
+            public int waterStored { get; set; }
+            public int fertilizer { get; set; }
+
+            public TileData(Vector2 tiles, string location, int fertilizer, int waterStored = 0)
+            {
+                this.tiles = tiles;
+                this.location = location;
+                this.waterStored = waterStored;
+                this.fertilizer = fertilizer;
             }
         }
     }

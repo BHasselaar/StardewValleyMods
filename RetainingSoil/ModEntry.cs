@@ -1,10 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
-using RetainingSoil.framework;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
+using StardewValley.Locations;
 using StardewValley.TerrainFeatures;
 using System.Collections.Generic;
+using System.Linq;
+using static RetainingSoil.ModData;
 
 namespace RetainingSoil
 {
@@ -48,8 +50,15 @@ namespace RetainingSoil
                                          ((HoeDirt)entry.Value).fertilizer == 920) &&
                                          ((HoeDirt)entry.Value).state == 1)
                                     {
-                                        foreach (Dictionary<Vector2, TileData> tileData in data[location])
+                                        foreach (List<TileData> listTileData in modData.data)
                                         {
+                                            foreach (TileData tileData in listTileData)
+                                            {
+                                                if (tileData.tiles == entry.Key)
+                                                {
+                                                    list.Add(new TileData(entry.Key, location.name, ((HoeDirt)entry.Value).fertilizer, tileData.waterStored));
+                                                }
+                                            }
                                             
                                         }
                                     }
@@ -59,7 +68,7 @@ namespace RetainingSoil
                         data[location] = list;
                     }
                 }
-                modData.LoadData(data);
+                modData.SaveData(data);
                 this.Helper.Data.WriteSaveData("RetainingSoil", modData);
             }
         }
@@ -80,18 +89,7 @@ namespace RetainingSoil
             if (Game1.IsMasterGame)
             {
                 modData = this.Helper.Data.ReadSaveData<ModData>("key") ?? new ModData();
-                restoreHoeDirt();
             }
-        }
-
-        private void saveFertilizedDirt()
-        {
-
-        }
-
-        private void restoreHoeDirt()
-        {
-
         }
 
         private List<GameLocation> getAllLocationsAndBuildings()
@@ -99,6 +97,7 @@ namespace RetainingSoil
             List<GameLocation> locations = new List<GameLocation>();
             locations.Add(Game1.getFarm());
             //locations.Add(Game1.getLocationFromName("Greenhouse")); Later thing
+            //Game1.locations.OfType<BuildableGameLocation>(); Later thing
             return locations;
         }
     }
